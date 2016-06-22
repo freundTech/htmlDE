@@ -1,0 +1,27 @@
+<html>
+	<body style="background-color: rgba(0,0,0,0)">
+		<p style="color: red" id=text>loading</p>
+		<img src="img/circle.png" />
+	</body>
+</html>
+<script src="js/jquery.js"></script>
+<script>
+$.ajax({
+	url: "python://cmd/run",
+	type: "GET",
+	data: {
+	    "cmd": "whoami"
+	},
+	dataType: "json",
+	success: function(data, status, xhr) {
+	    if(data.status === 0) {
+	        console.log(data.result);
+	        $("#text").html("Logged in as " + data.result);
+	    }
+	    else {
+	        console.log(data.error);
+	    }
+	}
+});
+</script>
+
