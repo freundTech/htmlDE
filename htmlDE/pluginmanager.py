@@ -21,13 +21,14 @@ def load_plugins():
 	    
 	    
 def getfromplugin(pluginname, path, query):
-    obj = _plugins[pluginname]
+    obj = _plugins[pluginname].public
     attributes = path.split(".")
-    for attr in attributes:
-        try:
+    try:
+        obj = obj[attributes[0]]
+        for attr in attributes[1:]:
             obj = getattr(obj, attr)
-        except AttributeError as err:
-            raise err
+    except AttributeError, KeyError as err:
+        raise err
     if callable(obj):
         return obj(**query)
     else:
