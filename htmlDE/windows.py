@@ -7,7 +7,7 @@ from gi.repository import Gtk, Gdk, GdkPixbuf, WebKit, GObject
 import cairo
 
 from htmlDE.helpers.regionhelpers import cairo_region_create_from_surface
-from htmlDE.pluginmanager import plugins, getfromplugin
+from htmlDE.pluginmanager import getfromplugin, inject_libraries
 
 mask_accuracy = 5
 
@@ -43,6 +43,7 @@ class _HtmlDeWindow(Gtk.Window):
         self.webview.connect("resource-request-starting", self.resource_request_starting)
 
         self.webview.load_uri(url)
+        inject_libraries(self.webview)
 
     def do_draw(self, cr):
         Gtk.Window.do_draw(self, cr)

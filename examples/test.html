@@ -6,22 +6,12 @@
 </html>
 <script src="js/jquery.js"></script>
 <script>
-$.ajax({
-	url: "python://cmd/run",
-	type: "GET",
-	data: {
-	    "cmd": "whoami"
-	},
-	dataType: "json",
-	success: function(data, status, xhr) {
-	    if(data.status === 0) {
-	        console.log(data.result);
-	        $("#text").html("Logged in as " + data.result);
-	    }
-	    else {
-	        console.log(data.error);
-	    }
+plugins.cmd.run("whoami", function(data) {
+	if(data.status === 0) {
+	    $("#text").html("Logged in as " + data.result);
+	}
+	else {
+	    console.log(data.error);
 	}
 });
 </script>
-

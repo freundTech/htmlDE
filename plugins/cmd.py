@@ -11,6 +11,3 @@ def setup():
 def run(cmd=None, **kwargs):
     output = subprocess.check_output(cmd, shell=True)
     return output.decode('utf-8')
-    
-class Demo():
-    test = 1
