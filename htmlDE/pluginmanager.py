@@ -1,23 +1,23 @@
 import sys
 import inspect
 from os import listdir
-from os.path import dirname, basename, abspath, isfile, join
+from os.path import dirname, basename, abspath, isfile, isdir, join
 
 _plugins = {}
 
 def load_plugins():
 	folder = join(dirname(abspath(sys.argv[0])), "plugins")
 	
-	files = [f[:-3] for f in listdir(folder) if isfile(join(folder, f)) and f.endswith(".py")]
-	for file_ in files:
-	    _plugins[file_] = __import__("plugins."+file_, globals(), locals(), ['object'], 0)
-	    setattr(_plugins[file_], "print", pluginprint)
+	plugins = [f for f in listdir(folder) if isdir(join(folder, f))]
+	for plugin in plugins:
+	    _plugins[plugin] = __import__("plugins."+plugin, globals(), locals(), ['object'], 0)
+	    setattr(_plugins[plugin], "print", pluginprint)
 	    try:
-	        if getattr(_plugins[file_], "setup")() == False:
+	        if getattr(_plugins[plugin], "setup")() == False:
 	            raise
 	    except:
-	        print("{} failed to load".format(file_))
-	        _plugins.pop(file_)
+	        print("{} failed to load".format(plugin))
+	        _plugins.pop(plugin)
 	    
 	    
 def getfromplugin(pluginname, path, query):
@@ -34,16 +34,16 @@ def getfromplugin(pluginname, path, query):
         return obj
 
 def inject_libraries(webview):
-    folder = join(dirname(abspath(sys.argv[0])), "plugins", "js")
+    folder = join(dirname(abspath(sys.argv[0])), "plugins")
 
     webview.execute_script("window.plugins = {}")
     for plugin in _plugins.keys():
-        file_ = join(folder, plugin+".js")
+        file_ = join(folder, plugin, "js", "main.js")
         if isfile(file_):
             with open(file_, 'r') as f:
                 script = f.read()
                 webview.execute_script("window.plugins.{}=".format(plugin)+script)
 
 def pluginprint(*args, **kwargs):
-    pluginname = '.'.join(basename(inspect.stack()[1][1]).split(".")[:-1])
+    pluginname = basename(dirname(inspect.stack()[1][1]))
     print("["+pluginname+"]",  *args, **kwargs)
