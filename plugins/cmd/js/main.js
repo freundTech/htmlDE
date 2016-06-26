@@ -8,6 +8,5 @@
 			corefunctions.sendXHR(url, data, callback);
 		}
 	};
-	console.log("loaded");
 	return cmd;
 })();

@@ -30,7 +30,6 @@ def getfromplugin(pluginname, path, query):
 
 def inject_libraries(webview):
     folder = join(dirname(abspath(sys.argv[0])), "plugins")
-    print("injecting")
     webview.execute_script("window.plugins = {}")
     for plugin in _plugins.keys():
         file_ = join(folder, plugin, "js", "main.js")

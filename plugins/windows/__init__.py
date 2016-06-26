@@ -38,8 +38,23 @@ def createPanelWindow(name=None, url=None, x=None, y=None, width=None, height=No
     windows[name] = PanelWindow(url, x, y, width, height, transparent)
     windows[name].show_all()
 
+def deleteWindow(name=None):
+    ensureArguments(name)
+    if name in windows.keys():
+        windows[name].destroy()
+        windows.pop(name)
+
+def moveWindow(name=None, x=None, y=None):
+    ensureArguments(name, x, y)
+    x = int(x)
+    y = int(y)
+    if name in windows.keys():
+        windows[name].move(x, y);
+
 public = {
     "list": list,
     "createBackgroundWindow": createBackgroundWindow,
-    "createPanelWindow": createPanelWindow
+    "createPanelWindow": createPanelWindow,
+    "deleteWindow": deleteWindow,
+    "moveWindow": moveWindow
 }
