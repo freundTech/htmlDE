@@ -8,27 +8,21 @@ _plugins = {}
 def load_plugins():
 	folder = join(dirname(abspath(sys.argv[0])), "plugins")
 	
-	plugins = [f for f in listdir(folder) if isdir(join(folder, f))]
+	plugins = [f for f in listdir(folder) if isdir(join(folder, f)) and f != "__pycache__"]
 	for plugin in plugins:
 	    _plugins[plugin] = __import__("plugins."+plugin, globals(), locals(), ['object'], 0)
-	    setattr(_plugins[plugin], "print", pluginprint)
-	    try:
-	        if getattr(_plugins[plugin], "setup")() == False:
-	            raise
-	    except:
+	    _plugins[plugin].print = pluginprint
+	    if _plugins[plugin].setup() == False:
 	        print("{} failed to load".format(plugin))
 	        _plugins.pop(plugin)
-	    
-	    
+
 def getfromplugin(pluginname, path, query):
     obj = _plugins[pluginname].public
     attributes = path.split(".")
-    try:
-        obj = obj[attributes[0]]
-        for attr in attributes[1:]:
-            obj = getattr(obj, attr)
-    except AttributeError, KeyError as err:
-        raise err
+    obj = obj[attributes[0]]
+    for attr in attributes[1:]:
+        obj = getattr(obj, attr)
+
     if callable(obj):
         return obj(**query)
     else:
@@ -36,7 +30,7 @@ def getfromplugin(pluginname, path, query):
 
 def inject_libraries(webview):
     folder = join(dirname(abspath(sys.argv[0])), "plugins")
-
+    print("injecting")
     webview.execute_script("window.plugins = {}")
     for plugin in _plugins.keys():
         file_ = join(folder, plugin, "js", "main.js")

@@ -1,5 +1,5 @@
 import json
-from urllib.parse import urlparse, parse_qs
+from urllib.parse import urlparse, parse_qsl
 import gi
 gi.require_version("Gtk", "3.0")
 gi.require_version("WebKit", "3.0")
@@ -11,7 +11,9 @@ from htmlDE.pluginmanager import getfromplugin, inject_libraries
 
 mask_accuracy = 5
 
-class _HtmlDeWindow(Gtk.Window):
+mainWindow = None
+
+class _Window(Gtk.Window):
     webview = None
     isPageLoaded = False
 
@@ -82,7 +84,7 @@ class _HtmlDeWindow(Gtk.Window):
         if message.get_property("method") != "GET": 
             print("Unsupported method")
             return
-        query = dict(parse_qs(url.query))
+        query = dict(parse_qsl(url.query))
         
         try:
             result = getfromplugin(url.netloc, url.path[1:].replace("/", "."), query)
@@ -113,13 +115,13 @@ class _HtmlDeWindow(Gtk.Window):
         Gtk.main_quit()
 
 
-class HtmlDeBackgroundWindow(_HtmlDeWindow):
+class BackgroundWindow(_Window):
     def __init__(self, url, posx, posy, width, height, transparent=False):
-        _HtmlDeWindow.__init__(self, url, posx, posy, width, height, transparent)
+        _Window.__init__(self, url, posx, posy, width, height, transparent)
         self.set_type_hint(Gdk.WindowTypeHint.DESKTOP)
 
-class HtmlDePanelWindow(_HtmlDeWindow):
+class PanelWindow(_Window):
     def __init__(self, url, posx, posy, width, height, transparent=True):
-        _HtmlDeWindow.__init__(self, url, posx, posy, width, height, transparent)
+        _Window.__init__(self, url, posx, posy, width, height, transparent)
         self.set_type_hint(Gdk.WindowTypeHint.DOCK)
 
