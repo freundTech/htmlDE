@@ -4,55 +4,57 @@ from urllib.parse import urlparse
 from htmlDE.windows import BackgroundWindow, PanelWindow
 from htmlDE.helpers.pluginhelpers import ensureArguments
 
-windows = {}
+windows = []
 
 def setup():
     mainWindow = PanelWindow('file://'+abspath(sys.argv[1]), 0, 0, 1000, 500, transparent=True)
     mainWindow.show_all()
     
-    windows["main"] = mainWindow
+    windows.append(mainWindow)
     print("windows setup")
 
-def list():
-    return windows.keys()
-
-def createBackgroundWindow(name=None, url=None, x=None, y=None, width=None, height=None, transparent=False, own=None):
-    ensureArguments(name, url, x, y, width, height, own)
+def createBackgroundWindow(url=None, x=None, y=None, width=None, height=None, transparent=False, own=None):
+    ensureArguments(url, x, y, width, height, own)
     x = int(x)
     y = int(y)
     width = int(width)
     height = int(height)
     path = dirname(urlparse(own).path)
     url = "file://"+path+"/"+url
-    windows[name] = BackgroundWindow(url, x, y, width, height, transparent)
-    windows[name].show_all()
+    id = len(windows)
+    windows.append(BackgroundWindow(url, x, y, width, height, transparent))
+    windows[id].show_all()
+    return {"id": id}
 
-def createPanelWindow(name=None, url=None, x=None, y=None, width=None, height=None, transparent=True, own=None):
-    ensureArguments(name, url, x, y, width, height, own)
+def createPanelWindow(url=None, x=None, y=None, width=None, height=None, transparent=True, own=None):
+    ensureArguments(url, x, y, width, height, own)
     x = int(x)
     y = int(y)
     width = int(width)
     height = int(height)
     path = dirname(urlparse(own).path)
     url = "file://"+path+"/"+url
-    windows[name] = PanelWindow(url, x, y, width, height, transparent)
-    windows[name].show_all()
+    id = len(windows)
+    windows.append(PanelWindow(url, x, y, width, height, transparent))
+    windows[id].show_all()
+    return {"id": id}
 
-def deleteWindow(name=None):
-    ensureArguments(name)
-    if name in windows.keys():
-        windows[name].destroy()
-        windows.pop(name)
+def deleteWindow(id=None):
+    ensureArguments(id)
+    id = int(id)
+    if id < len(windows) and windows[id] != None:
+        windows[id].destroy()
+        windows.pop(id)
 
-def moveWindow(name=None, x=None, y=None):
-    ensureArguments(name, x, y)
+def moveWindow(id=None, x=None, y=None):
+    ensureArguments(id, x, y)
+    id = int(id)
     x = int(x)
     y = int(y)
-    if name in windows.keys():
-        windows[name].move(x, y);
+    if id < len(windows) and windows[id] != None:
+        windows[id].move(x, y);
 
 public = {
-    "list": list,
     "createBackgroundWindow": createBackgroundWindow,
     "createPanelWindow": createPanelWindow,
     "deleteWindow": deleteWindow,

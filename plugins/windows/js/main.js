@@ -3,9 +3,9 @@
 		"events": {
 			"newWindowCreated": "newWindowCreated"
 		},
-		"createBackgroundWindow": function(name, url, x, y, width, height, transparent) {
+		"Window": function(url, x, y, width, height, transparent, type) {
+			this.id = 0;
 			data = {
-				"name": name,
 				"url": url,
 				"x": x,
 				"y": y,
@@ -16,42 +16,40 @@
 			if(transparent !== undefined) {
 				data.transparent = transparent;
 			}
-			url = "python://windows/createBackgroundWindow";
-			corefunctions.sendXHR(url, data);
+			url = "python://windows/create"+type;
+			corefunctions.sendXHR(url, data, function(data) {
+				this.id = data.result.id;
+			}.bind(this));
+
 		},
-		"createPanelWindow": function(name, url, x, y, width, height, transparent) {
-			data = {
-				"name": name,
-				"url": url,
-				"x": x,
-				"y": y,
-				"width": width,
-				"height": height,
-				"own": window.location
-			};
-			if(transparent !== undefined) {
-				data.transparent = transparent;
-			}
-			url = "python://windows/createPanelWindow";
-			corefunctions.sendXHR(url, data);
+		"BackgroundWindow": function(url, x, y, width, height, transparent) {
+			windows.Window.call(this, url, x, y, width, height, transparent, "BackgroundWindow");
 		},
-		"deleteWindow": function(name) {
-			data = {
-				"name": name
-			};
-			url = "python://windows/deleteWindow";
-			corefunctions.sendXHR(url, data);
-		},
-		"moveWindow": function(name, x, y) {
-			data = {
-				"name": name,
-				"x": x,
-				"y": y
-			};
-			url = "python://windows/moveWindow";
-			corefunctions.sendXHR(url, data);
+		"PanelWindow": function(url, x, y, width, height, transparent) {
+			windows.Window.call(this, url, x, y, width, height, transparent, "PanelWindow");
 		}
 	}
+
+	windows.Window.prototype.delete = function() {
+		data = {
+			"id": this.id
+		};
+		url = "python://windows/deleteWindow";
+		corefunctions.sendXHR(url, data);
+	}
+	windows.Window.prototype.move = function(x, y) {
+		data = {
+			"id": this.id,
+			"x": x,
+			"y": y
+		};
+		url = "python://windows/moveWindow";
+		corefunctions.sendXHR(url, data);
+	}
+	windows.BackgroundWindow.prototype = Object.create(windows.Window.prototype);
+	windows.BackgroundWindow.prototype.constructor = windows.BackgroundWindow;
+	windows.PanelWindow.prototype = Object.create(windows.Window.prototype);
+	windows.PanelWindow.prototype.constructor = windows.PanelWindow;
 
 	return windows
 })();

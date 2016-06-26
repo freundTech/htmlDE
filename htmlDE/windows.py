@@ -93,7 +93,7 @@ class _Window(Gtk.Window):
             else:
                 return_ = {
                     "status": 0,
-                    "result": str(result),
+                    "result": result,
                 }
                 request.set_uri("data:application/json,"+json.dumps(return_))
         except AttributeError as err:

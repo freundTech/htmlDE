@@ -1,19 +1,20 @@
 <html>
 	<head>
 		<script type="text/javascript">
-		var i = 0
+		var i = 0;
+		var second;
 		function move() {
 			if(i<20) {
-				windows.moveWindow("second", 100+10*i, 100);
+				second.move(100+10*i, 100);
 				i++;
 				setTimeout(move, 500);
 			}
 			else {
-				windows.deleteWindow("second");
+				second.delete();
 			}
 		}
 		function openWindow() {
-			windows.createPanelWindow("second", "second.html", 100, 100, 100, 100, true);
+			second = new windows.PanelWindow("second.html", 100, 100, 100, 100, true);
 			setTimeout(move, 500);
 		}
 		window.onload = openWindow
