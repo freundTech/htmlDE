@@ -49,7 +49,7 @@ def deleteWindow(id=None):
     id = int(id)
     if id < len(windows) and windows[id] != None:
         windows[id].destroy()
-        windows.pop(id)
+        windows[id] = None
 
 def moveWindow(id=None, x=None, y=None):
     ensureArguments(id, x, y)
@@ -59,9 +59,34 @@ def moveWindow(id=None, x=None, y=None):
     if id < len(windows) and windows[id] != None:
         windows[id].move(x, y);
 
+def resizeWindow(id=None, width=None, height=None):
+    ensureArguments(id, width, height)
+    id = int(id)
+    width = int(width)
+    height = int(height)
+    if id < len(windows) and windows[id] != None:
+        windows[id].resize(width, height);
+
+def getWindowPosition(id=None):
+    ensureArguments(id)
+    id = int(id)
+    pos = windows[id].get_position()
+
+    return {"x": pos[0], "y": pos[1]}
+
+def getWindowSize(id=None):
+    ensureArguments(id)
+    id = int(id)
+    pos = windows[id].get_geometry()
+
+    return {"width": pos[2], "height": pos[3]}
+
 public = {
     "createBackgroundWindow": createBackgroundWindow,
     "createPanelWindow": createPanelWindow,
     "deleteWindow": deleteWindow,
-    "moveWindow": moveWindow
+    "moveWindow": moveWindow,
+    "resizeWindow": resizeWindow,
+    "getWindowPosition": getWindowPosition,
+    "getWindowSize": getWindowSize
 }

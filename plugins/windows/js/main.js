@@ -46,6 +46,29 @@
 		url = "python://windows/moveWindow";
 		corefunctions.sendXHR(url, data);
 	}
+	windows.Window.prototype.resize = function(width, height) {
+		data = {
+			"id": this.id,
+			"width": width,
+			"height": height
+		};
+		url = "python://windows/resizeWindow";
+		corefunctions.sendXHR(url, data);
+	}
+	windows.Window.prototype.getPosition = function() {
+		data = {
+			"id": this.id
+		};
+		url = "python://windows/getWindowPosition";
+		return corefunctions.sendSXHR(url, data);
+	}
+	windows.Window.prototype.getSize = function() {
+		data = {
+			"id": this.id
+		};
+		url = "python://windows/getWindowSize";
+		return corefunctions.sendSXHR(url, data);
+	}
 	windows.BackgroundWindow.prototype = Object.create(windows.Window.prototype);
 	windows.BackgroundWindow.prototype.constructor = windows.BackgroundWindow;
 	windows.PanelWindow.prototype = Object.create(windows.Window.prototype);

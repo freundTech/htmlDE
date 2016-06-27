@@ -5,7 +5,7 @@
 		var second;
 		function move() {
 			if(i<20) {
-				second.move(100+10*i, 100);
+				second.move(100+10*i, second.getPosition().y);
 				i++;
 				setTimeout(move, 500);
 			}
@@ -20,7 +20,7 @@
 		window.onload = openWindow
 		</script>
 	</head>
-	<body>
+	<body style="color: white">
 		<p>This is the main Window</p>
 	</body>
 <html

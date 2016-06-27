@@ -20,7 +20,18 @@
 			}
 			request.open("GET", url+"?"+corefunctions.encodeQuery(data), true);
 			request.send();
+		},
+		"sendSXHR": function(url, data) {
+			request = new XMLHttpRequest();
+			request.open("GET", url+"?"+corefunctions.encodeQuery(data), false);
+			request.send();
+
+			result = JSON.parse(request.responseText);
+			if(result.status === 0) {
+				return result.result;
+			}
 		}
+
 	}
 
 	return corefunctions
