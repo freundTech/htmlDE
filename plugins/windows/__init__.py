@@ -1,15 +1,20 @@
 import sys
 from os.path import abspath, dirname
 from urllib.parse import urlparse
+from htmlDE import arguments
 from htmlDE.windows import BackgroundWindow, PanelWindow
 from htmlDE.helpers.pluginhelpers import ensureArguments
 
 windows = []
 
 def setup():
-    mainWindow = PanelWindow('file://'+abspath(sys.argv[1]), 0, 0, 1000, 500, transparent=True)
-    mainWindow.show_all()
+    print(arguments.x, arguments.y, arguments.width, arguments.height, arguments.file, arguments.type)
+    if arguments.type == "background":
+        mainWindow = BackgroundWindow('file://'+abspath(arguments.file), arguments.x, arguments.y, arguments.width, arguments.height, transparent=arguments.transparent)
+    else:
+        mainWindow = PanelWindow('file://'+abspath(arguments.file), arguments.x, arguments.y, arguments.width, arguments.height, transparent=arguments.transparent)
     
+    mainWindow.show_all()
     windows.append(mainWindow)
     print("windows setup")
 
