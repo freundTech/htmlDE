@@ -23,7 +23,7 @@ def parse_args():
     parser.add_argument("width", help="The width of the window as pixels or percentage")
     parser.add_argument("height", help="The height of the window as pixels or percentage")
     parser.add_argument("type", help="The type of the window. Valid values are \"background\" and \"panel\"")
-    parser.add_argument("--screen", help="Which screen to display the window on. Default is 0", default=0)
+    parser.add_argument("--screen", help="Which screen to display the window on. Default is 0", default=0, type=int)
     parser.add_argument("--transparent", help="If set the window has a transparent background", action="store_true", default=False)
     args = parser.parse_args()
     
