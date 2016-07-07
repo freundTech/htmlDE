@@ -30,8 +30,23 @@
 			if(result.status === 0) {
 				return result.result;
 			}
+		},
+		"EventHandler": function(events) {
+			this.handlers = [];
+			for(var id in events) {
+				this.handlers[events[id]] = [];
+			}
 		}
-
+	}
+	corefunctions.EventHandler.prototype.listen = function(name, callback) {
+		if(name in this.handlers) {
+			this.handlers[name] = callback;
+		}
+	}
+	corefunctions.EventHandler.prototype.dispatch = function(name, data) {
+		if(name in this.handlers) {
+			this.handlers[name](data);
+		}
 	}
 
 	return corefunctions

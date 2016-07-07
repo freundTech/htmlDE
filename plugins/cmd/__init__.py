@@ -1,6 +1,8 @@
 import subprocess
 import os
 
+dependencies = ["corefunctions"]
+
 def setup():
     if os.getuid() == 0:
         print("WARNING!!! Running as root. This can be very dangerous!")
