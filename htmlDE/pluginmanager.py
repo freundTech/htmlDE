@@ -33,7 +33,6 @@ def getfromplugin(pluginname, path, query):
 def inject_libraries(webview):
     folder = join(dirname(abspath(sys.argv[0])), "plugins")
     webview.execute_script("window.plugins = {}")
-    injected = []
     plugins = list(_plugins.keys())
     for plugin in plugins:
         file_ = join(folder, plugin, "js", "main.js")
@@ -62,7 +61,7 @@ def _sortplugins(plugins):
         if len(plugins) == 0:
             break
         if count == len(plugins):
-            print("The following plugins are missing dependencies or have cyclic dependencies:")
+            print("The following plugins have missing cyclic dependencies:")
             for key in plugins.keys():
                 print(key)
             break
