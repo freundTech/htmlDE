@@ -40,12 +40,14 @@
 	}
 	corefunctions.EventHandler.prototype.listen = function(name, callback) {
 		if(name in this.handlers) {
-			this.handlers[name] = callback;
+			this.handlers[name].push(callback);
 		}
 	}
 	corefunctions.EventHandler.prototype.dispatch = function(name, data) {
 		if(name in this.handlers) {
-			this.handlers[name](data);
+			for(var i in this.handlers[name]) {
+				this.handlers[name][i](data);
+			}
 		}
 	}
 
