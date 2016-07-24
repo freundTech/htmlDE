@@ -1,5 +1,5 @@
 (function() {
-    cmd = {
+    var cmd = {
 		"run": function(command, callback) {
 			data = {
 				"cmd": command

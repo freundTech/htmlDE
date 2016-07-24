@@ -1,5 +1,5 @@
 (function() {
-	windows = {
+	var windows = {
 		"events": {
 			"newWindowCreated": "newWindowCreated"
 		},

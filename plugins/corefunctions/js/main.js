@@ -1,5 +1,5 @@
 (function() {
-	corefunctions = {
+	var corefunctions = {
 		"encodeQuery": function(obj) {
 			var str = [];
 			for(var p in obj) {

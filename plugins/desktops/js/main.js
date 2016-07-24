@@ -1,5 +1,5 @@
 (function() {
-	desktops = {
+	var desktops = {
 		"getCurrentDesktop": function() {
 			url = "python://desktops/getCurrentDesktop";
 			return corefunctions.sendSXHR(url, {});
