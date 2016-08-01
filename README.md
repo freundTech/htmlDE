@@ -4,10 +4,10 @@ This project is work in progress, but slowly getting to a usable state.
 
 htmlDE is a program that allows you to easily create custom desktop environments in html, CSS and javascript.
 
-htmlDE supports creating both background windows and panels.
+htmlDE supports creating both background windows and panels.  
 Transparent window backgrounds (which you can click through) are also supported.
 
-htmlDE plans on offering a wide variety of plugins, to access the system.
+htmlDE plans on offering a wide variety of plugins, to access the system.  
 Currently supported plugins are:
 * cmd: Run system commands
 * desktops: Manage virtual desktops
