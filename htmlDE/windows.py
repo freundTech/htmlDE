@@ -91,11 +91,16 @@ class _Window(Gtk.Window):
             if result == None:
                 request.set_uri("about:blank")
             else:
-                return_ = {
-                    "status": 0,
-                    "result": result,
-                }
-                request.set_uri("data:application/json,"+json.dumps(return_))
+                if type(result) == tuple:
+                    returntype = result[1]
+                    return_ = result[0]
+                else:
+                    returntype = "application/json"
+                    return_ = json.dumps({
+                        "status": 0,
+                        "result": result,
+                    })
+                request.set_uri("data:"+returntype+","+return_)
         except AttributeError as err:
             request.set_uri("data:application/json,{\"status\": 1, \"error\": \""+str(err)+"\"}")
         
@@ -124,4 +129,4 @@ class PanelWindow(_Window):
     def __init__(self, url, posx, posy, width, height, transparent=True):
         _Window.__init__(self, url, posx, posy, width, height, transparent)
         self.set_type_hint(Gdk.WindowTypeHint.DOCK)
-
+        self.stick()
