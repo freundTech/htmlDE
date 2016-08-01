@@ -1,0 +1,9 @@
+This list is unchecked and might not be complete
+
+python3.5 (maybe other python3 versions will also work)
+pycairo (git version. Regular release is missing features)
+pygobject (version with cairo region patch. Needed for click-through-transparency)
+xpybutil (will be dropped from dependencies after desktops plugin has been 
+rewritten to use LibWnck from gobject instead)
+
+This only worka on Linux systems running X11. Other operatingsystems and other displayservers are not supported.
