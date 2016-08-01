@@ -1,11 +1,11 @@
 (function() {
     var cmd = {
 		"run": function(command, callback) {
-			data = {
+			var data = {
 				"cmd": command
-			}
-			url = "python://cmd/run";
-			corefunctions.sendXHR(url, data, callback);
+			};
+			var url = "python://cmd/run";
+			plugins.corefunctions.sendXHR(url, data, callback);
 		}
 	};
 	return cmd;

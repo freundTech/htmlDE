@@ -25,7 +25,6 @@
 			request = new XMLHttpRequest();
 			request.open("GET", url+"?"+corefunctions.encodeQuery(data), false);
 			request.send();
-
 			result = JSON.parse(request.responseText);
 			if(result.status === 0) {
 				return result.result;
@@ -37,20 +36,19 @@
 				this.handlers[events[id]] = [];
 			}
 		}
-	}
+	};
 	corefunctions.EventHandler.prototype.listen = function(name, callback) {
 		if(name in this.handlers) {
 			this.handlers[name].push(callback);
 		}
-	}
+	};
 	corefunctions.EventHandler.prototype.dispatch = function(name, data) {
 		if(name in this.handlers) {
 			for(var i in this.handlers[name]) {
 				this.handlers[name][i](data);
 			}
 		}
-	}
+	};
 
-	return corefunctions
-
+	return corefunctions;
 })();

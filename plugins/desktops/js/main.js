@@ -1,26 +1,26 @@
 (function() {
 	var desktops = {
 		"getCurrentDesktop": function() {
-			url = "python://desktops/getCurrentDesktop";
-			return corefunctions.sendSXHR(url, {});
+			var url = "python://desktops/getCurrentDesktop";
+			return plugins.corefunctions.sendSXHR(url, {});
 		},
 		"getDesktopNames": function() {
-			url = "python://desktops/getDesktopNames";
-			return corefunctions.sendSXHR(url, {});
+			var url = "python://desktops/getDesktopNames";
+			return plugins.corefunctions.sendSXHR(url, {});
 		},
 		"getNumberOfDesktop": function() {
-			url = "python://desktops/getNumberOfDesktops";
-			return corefunctions.sendSXHR(url, {});
+			var url = "python://desktops/getNumberOfDesktops";
+			return plugins.corefunctions.sendSXHR(url, {});
 		},
 		"setCurrentDesktop": function(desktop) {
-			data = {
+			var data = {
 				"desktop": desktop
-			}
-			url = "python://desktops/setCurrentDesktop";
-			corefunctions.sendXHR(url, data);
+			};
+			var url = "python://desktops/setCurrentDesktop";
+			plugins.corefunctions.sendXHR(url, data);
 		},
 		"events": new plugins.corefunctions.EventHandler(["desktopChanged"])
-	}
+	};
 
-	return desktops
+	return desktops;
 })();
