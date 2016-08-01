@@ -1,0 +1,17 @@
+{
+	"windows": [
+		{
+			"file": "index.html",
+			"x": 0,
+			"y": 0,
+			"width": 64,
+			"height": 64,
+			"type": "panel",
+			"transparent": true,
+			"config": {}
+		}
+	],
+	"plugins": [
+		"taskbar"
+	]
+}

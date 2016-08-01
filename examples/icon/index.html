@@ -1,0 +1,13 @@
+<html>
+	<head>
+	<script type=text/javascript>
+		function main() {
+			document.getElementById("icon").src = plugins.taskbar.getWindows()[0].getIconUrl();
+		}
+		window.onload = main
+	</script>
+	</head>
+	<body>
+		<img id=icon />
+	</body>
+</html>
