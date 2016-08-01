@@ -8,7 +8,6 @@ from os.path import abspath
 from signal import signal, SIGINT, SIG_DFL
 from htmlDE import settings
 from htmlDE.pluginmanager import load_plugins
-from htmlDE.arguments import parse_args
 from htmlDE.windows import BackgroundWindow, PanelWindow
 
 if __name__ == "__main__":
