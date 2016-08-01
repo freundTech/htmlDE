@@ -3,23 +3,35 @@ import inspect
 from os import listdir
 from os.path import dirname, basename, abspath, isfile, isdir, join
 from collections import OrderedDict
+from htmlDE import settings
 
-_plugins = {}
-
-def load_plugins():
-        global _plugins
+def load_plugins(plugins):
         folder = join(dirname(abspath(sys.argv[0])), "plugins")
 
-        installedplugins = [f for f in listdir(folder) if isdir(join(folder, f)) and f != "__pycache__"]
+        installedplugins = [f for f in listdir(folder) if isdir(join(folder, f)) and not f.startswith("_")]
         loadedplugins = {}
-        for pluginname in installedplugins:
-                loadedplugins[pluginname] = __import__("plugins."+pluginname, globals(), locals(), ['object'], 0)
-        _plugins = _sortplugins(loadedplugins)
-        for plugin in _plugins:
-            _plugins[plugin].setup()
+        loadedplugins = addDepsRecursive(plugins, installedplugins, loadedplugins)
+        plugins_ = _sortplugins(loadedplugins)
+        for plugin in plugins_:
+            plugins_[plugin].setup()
+
+        return plugins_
+
+def addDepsRecursive(plugins, installedplugins, loadedplugins):
+    newplugins = []
+    for plugin in plugins:
+        if plugin not in installedplugins:
+            raise Exception("Plugin {} is not installed. Please install it or fix your setup file".format(plugin))
+        if plugin not in loadedplugins:
+            loadedplugins[plugin] = __import__("plugins."+plugin, globals(), locals(), ['object'], 0)
+            newplugins += loadedplugins[plugin].dependencies
+    if len(newplugins) != 0:
+        return addDepsRecursive(newplugins, installedplugins, loadedplugins)
+    return loadedplugins
+
 
 def getfromplugin(pluginname, path, query):
-    obj = _plugins[pluginname].public
+    obj = settings.plugins[pluginname].public
     attributes = path.split(".")
     obj = obj[attributes[0]]
     for attr in attributes[1:]:
@@ -33,7 +45,7 @@ def getfromplugin(pluginname, path, query):
 def inject_libraries(webview):
     folder = join(dirname(abspath(sys.argv[0])), "plugins")
     webview.execute_script("window.plugins = {}")
-    plugins = list(_plugins.keys())
+    plugins = list(settings.plugins.keys())
     for plugin in plugins:
         file_ = join(folder, plugin, "js", "main.js")
         if isfile(file_):

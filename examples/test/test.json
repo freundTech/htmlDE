@@ -1,0 +1,17 @@
+{
+	"windows": [
+		{
+			"file": "index.html",
+			"x": 0,
+			"y": 0,
+			"width": 500,
+			"height": 300,
+			"type": "background",
+			"transparent": true,
+			"config": {}
+		}
+	],
+	"plugins": [
+		"cmd"
+	]
+}

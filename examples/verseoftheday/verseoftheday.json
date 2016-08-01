@@ -1,0 +1,16 @@
+{
+	"windows": [
+		{
+			"file": "index.html",
+			"x": "80%",
+			"y": 0,
+			"width": "20%",
+			"height": "15%",
+			"type": "background",
+			"transparent": true,
+			"config": {}
+		}
+	],
+	"plugins": [
+	]
+}

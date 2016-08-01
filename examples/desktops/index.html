@@ -1,4 +1,17 @@
 <html>
+	<head>
+	<script>
+		document.onload = function() {
+			var names = plugins.desktops.getDesktopNames()
+			var activeDesktop = plugins.desktops.getCurrentDesktop();
+
+			document.getElementById("text").innerHTML = activeDesktop +"<br/>"+names[activeDesktop]
+			plugins.desktops.events.listen("desktopChanged", function(e) {
+				document.getElementById("text").innerHTML = e +"<br/>"+names[e]
+			});
+		};
+	</script>
+	</head>
 	<body style="background-color: rgba(0,0,0,0)">
 		<p style="color: red" id=text>loading</p>
 	</body>

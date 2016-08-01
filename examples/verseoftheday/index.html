@@ -7,7 +7,6 @@
 				if(request.readyState == 4) {
 					if(request.status == 200) {
 						result = JSON.parse(request.responseText)[0];
-						console.log(result);
 						document.getElementById("verse").innerHTML = result.text;
 						document.getElementById("ref").innerHTML = result.bookname+" "+result.chapter+", "+result.verse;
 					}
