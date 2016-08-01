@@ -1,5 +1,9 @@
 #htmlDE
 
+Copyright (c) 2016 Adrian Freund  
+This project is mostly licensed under the GPLv2.  
+All files inside the folder `examples/` are licensed under the MIT license.
+
 This project is work in progress, but slowly getting to a usable state.
 
 htmlDE is a program that allows you to easily create custom desktop environments in html, CSS and javascript.
