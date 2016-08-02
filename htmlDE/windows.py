@@ -2,8 +2,8 @@ import json
 from urllib.parse import urlparse, parse_qsl
 import gi
 gi.require_version("Gtk", "3.0")
-gi.require_version("WebKit", "3.0")
-from gi.repository import Gtk, Gdk, GdkPixbuf, WebKit, GObject
+gi.require_version("WebKit2", "4.0")
+from gi.repository import Gtk, Gdk, GdkPixbuf, WebKit2, GObject
 import cairo
 
 from htmlDE.helpers.regionhelpers import cairo_region_create_from_surface
@@ -25,10 +25,11 @@ class _Window(Gtk.Window):
         self.set_decorated(False)
         
         
-        self.webview = WebKit.WebView()
+        self.webview = WebKit2.WebView()
         
         settings = self.webview.get_settings()
-        settings.set_property("enable-universal-access-from-file-uris", True)
+        settings.set_allow_file_access_from_file_urls(True)
+        settings.set_enable_webgl(True)
         self.webview.set_settings(settings)
 
         self.add(self.webview)
@@ -41,8 +42,8 @@ class _Window(Gtk.Window):
         self.connect("delete_event", self.close_application)
 
         self.webview.connect("context-menu", self.context_menu)
-        self.webview.connect("navigation-policy-decision-requested", self.navigation_requested)
-        self.webview.connect("resource-request-starting", self.resource_request_starting)
+        self.webview.connect("decide-policy", self.navigation_requested)
+        self.webview.connect("resource-load-started", self.resource_load_started)
 
         self.webview.load_uri(url)
         inject_libraries(self.webview)
@@ -75,13 +76,12 @@ class _Window(Gtk.Window):
     def open(self, url):
         self.webview.open(url)
 
-    def resource_request_starting(self, webview, webframe, webresource, request, response):
+    def resource_load_started(self, webview, resource, request):
         url = urlparse(request.get_uri())
         if url.scheme != "python":
             return
-        message = request.get_message()
         #I have no idea how to get the query for other methods. The request body is empty!
-        if message.get_property("method") != "GET": 
+        if request.get_http_method() != "GET": 
             print("Unsupported method")
             return
         query = dict(parse_qsl(url.query))
@@ -106,14 +106,15 @@ class _Window(Gtk.Window):
         
 
     #Prevent navigation. For example by clicking on links
-    def navigation_requested(self, widget, frame, request, action, decision):
-        if self.isPageLoaded:
-            return True
-        else:
-            self.isPageLoaded = True
+    def navigation_requested(self, webview, decision, type_):
+        if type_ == WebKit2.PolicyDecisionType.NAVIGATION_ACTION:
+            if self.isPageLoaded:
+                decision.ignore()
+            else:
+                self.isPageLoaded = True
 
     #Disable context menu
-    def context_menu(self, widget, result, keyboard, user_data):
+    def context_menu(self, webview, context_menu, event, hit_test_result):
         return True
 
     def close_application(self, widget, event, data=None):

@@ -23,4 +23,4 @@ def sendEvent(pluginname, eventname, data):
 
 def _sendEvent(pluginname, eventname, data):
     for window in settings.windows:
-        window.webview.execute_script("plugins.{}.events.dispatch(\"{}\", {})".format(pluginname, eventname, json.dumps(data, separators=(',',':'))))
+        window.webview.run_javascript("plugins.{}.events.dispatch(\"{}\", {})".format(pluginname, eventname, json.dumps(data, separators=(',',':'))), None, None)
