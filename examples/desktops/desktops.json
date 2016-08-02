@@ -2,9 +2,9 @@
 	"windows": [
 		{
 			"file": "index.html",
-			"x": 910, "__comment": "For full HD monitors",
-			"y": 0,
-			"width": 100,
+			"x": "45%",
+			"y": 30,
+			"width": "10%",
 			"height": 30,
 			"type": "background",
 			"transparent": true,
