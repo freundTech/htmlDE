@@ -35,7 +35,7 @@ class _Window(Gtk.Window):
         self.add(self.webview)
         
         if (self.transparent):
-            self.webview.set_transparent(True)
+            self.webview.set_background_color(Gdk.RGBA(0, 0, 0, 0))
             self.installTransparency(self)
             self.installTransparency(self.webview)
     
