@@ -29,6 +29,7 @@ class _Window(Gtk.Window):
         
         settings = self.webview.get_settings()
         settings.set_allow_file_access_from_file_urls(True)
+        settings.set_allow_universal_access_from_file_urls(True)
         settings.set_enable_webgl(True)
         self.webview.set_settings(settings)
 
