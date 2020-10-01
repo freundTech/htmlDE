@@ -6,7 +6,7 @@ All files inside the folder `examples/` are licensed under the MIT license.
 
 This project is work in progress, but slowly getting to a usable state.
 
-htmlDE is a program that allows you to easily create custom desktop environments in html, CSS and javascript.
+htmlDE is a program that allows you to easily create Awesome custom desktop environments in html, CSS and javascript.
 
 htmlDE supports creating both background windows and panels.  
 Transparent window backgrounds (which you can click through) are also supported.
